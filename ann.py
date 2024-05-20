@@ -4,7 +4,6 @@ import pandas as pd
 import seaborn as sns
 from keras import Sequential
 from keras import layers
-from keras import callbacks
 from keras import regularizers
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
 from sklearn.metrics import confusion_matrix, accuracy_score
@@ -65,7 +64,6 @@ classifier.add(layers.Dense(units=3, kernel_initializer='uniform', activation='s
 # Compile the ANN with Adam optimizer and categorical crossentropy loss function
 classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 classifier.summary()
-
 
 # Fit the ANN to the training set with a validation split of 0.3, and add early stopping to the model
 modelPerformance = classifier.fit(x=X_train, y=y_train, batch_size=20, epochs=100, validation_split=0.3)
