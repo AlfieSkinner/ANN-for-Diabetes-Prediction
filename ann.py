@@ -66,11 +66,9 @@ classifier.add(layers.Dense(units=3, kernel_initializer='uniform', activation='s
 classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 classifier.summary()
 
-# Define early stopping callback
-early_stopping = callbacks.EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
-# Fit the ANN to the training set with a validation split of 0.3
-modelPerformance = classifier.fit(x=X_train, y=y_train, batch_size=16, epochs=100, validation_split=0.3)
+# Fit the ANN to the training set with a validation split of 0.3, and add early stopping to the model
+modelPerformance = classifier.fit(x=X_train, y=y_train, batch_size=20, epochs=100, validation_split=0.3)
 
 # Predict the test set results
 y_pred = classifier.predict(X_test)
