@@ -13,7 +13,11 @@ from sklearn.model_selection import train_test_split
 dataset = pd.read_csv('Dataset-of-Diabetes.csv')
 
 # Check for missing values in the dataset
-print(dataset.isnull().sum())
+missing_values = dataset.isnull().sum()
+print(missing_values)
+
+# If there are missing values, remove rows with missing values
+dataset = dataset.dropna()
 
 # Preprocess the dataset
 # Correcting inconsistencies in categorical values
@@ -49,12 +53,12 @@ X_test = sc.transform(X_test)
 classifier = Sequential()
 
 # Add the input layer and first hidden layer with batch normalization
-classifier.add(layers.Dense(units=24, kernel_initializer='uniform', activation='relu', input_shape=(X_train.shape[1],), kernel_regularizer=regularizers.l2(0.01)))
+classifier.add(layers.Dense(units=32, kernel_initializer='uniform', activation='relu', input_shape=(X_train.shape[1],), kernel_regularizer=regularizers.l2(0.01)))
 classifier.add(layers.BatchNormalization())
 classifier.add(layers.Dropout(0.3))
 
 # Add the second hidden layer with batch normalization
-classifier.add(layers.Dense(units=16, kernel_initializer='uniform', activation='relu', kernel_regularizer=regularizers.l2(0.01)))
+classifier.add(layers.Dense(units=32, kernel_initializer='uniform', activation='relu', kernel_regularizer=regularizers.l2(0.01)))
 classifier.add(layers.BatchNormalization())
 classifier.add(layers.Dropout(0.3))
 
@@ -70,7 +74,6 @@ modelPerformance = classifier.fit(x=X_train, y=y_train, batch_size=20, epochs=10
 
 # Predict the test set results
 y_pred = classifier.predict(X_test)
-y_pred = (y_pred > 0.5)
 
 # Convert predictions and true values to single labels
 y_test_single = y_test.argmax(axis=1)
@@ -86,7 +89,7 @@ print("Accuracy: {:.2f}%".format(accuracy_percentage))
 
 # Create a plot confusion matrix
 plt.figure(figsize=(11, 7))
-sns.heatmap(conMat, annot=True, fmt='d', cmap='Purples', xticklabels=['Non-Diabetic', 'Predicted-Diabetic', 'Diabetic'], yticklabels=['Non-Diabetic', 'Predicted-Diabetic', 'Diabetic'])
+sns.heatmap(conMat, annot=True, fmt='d', cmap='Purples', xticklabels=['Diabetic', 'Predicted-Diabetic', 'Diabetic'], yticklabels=['Non-Diabetic', 'Predicted-Diabetic', 'Diabetic'])
 plt.xlabel('Predicted', fontsize=16)
 plt.ylabel('Factual', fontsize=16)
 plt.title('Diabetes Prediction Confusion Matrix')
